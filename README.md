@@ -6,6 +6,15 @@ Developed with ❤️ by **Keasser Gonzales**.
 
 ---
 
+## 👨‍💻 Developer & Contact Info
+
+- 🌐 **Portfolio:** [portfolio-v2-phi-rosy.vercel.app](https://portfolio-v2-phi-rosy.vercel.app/#projects)
+- 📧 **Email:** [gonzaleskeasser@gmail.com](mailto:gonzaleskeasser@gmail.com)
+- 📘 **Facebook:** [KDAbelletaGonzales](https://www.facebook.com/KDAbelletaGonzales)
+- 💬 **Telegram:** [@Keasser123](https://t.me/Keasser123)
+
+---
+
 ## 🌟 Key Features
 
 - 📅 **Interactive Event Calendar**: Google Calendar-style layout with real-time category filters, co-host counts, and interactive hover popovers.
