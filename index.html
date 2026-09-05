@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RideConnect PH | Philippine Motorcycle Community Platform</title>
   <meta name="description" content="Discover upcoming charity rides, fundraising events, medical missions, roadside assistance, and motorcycle community activities across the Philippines.">
-  <link rel="stylesheet" href="styles.css?v=2.4">
+  <link rel="stylesheet" href="styles.css?v=2.5">
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -524,10 +524,17 @@
             </div>
           </div>
           <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-right-to-bracket"></i> Login to Portal</button>
-          <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 14px;">
-            🔑 <strong>Super Admin:</strong> admin@irideconnect.ph / superadmin2026<br>
-            🏍️ <strong>Club Demo:</strong> falcon.riders@gmail.com / admin123
-          </p>
+          <div style="margin-top: 16px; padding: 12px; background: var(--bg-light); border-radius: var(--radius-md); border: 1px solid var(--glass-border); text-align: center;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">1-Click Quick Demo Fill</div>
+            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem;" onclick="fillSuperAdminDemo()">
+                <i class="fa-solid fa-crown" style="color: #d97706;"></i> Super Admin
+              </button>
+              <button type="button" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem;" onclick="fillClubDemo()">
+                <i class="fa-solid fa-motorcycle" style="color: var(--primary-blue);"></i> Club Demo
+              </button>
+            </div>
+          </div>
         </form>
 
         <!-- Registration Form -->
@@ -957,6 +964,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=2.3"></script>
+  <script src="app.js?v=2.5"></script>
 </body>
 </html>

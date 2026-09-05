@@ -303,10 +303,12 @@ function updateNavbarAuth() {
 
 function handleLoginSubmit(e) {
   e.preventDefault();
-  const emailInput = document.getElementById("loginEmail").value.trim().toLowerCase();
+  // Strip any accidental leading/trailing symbols (like '=' or quotes)
+  const rawEmail = document.getElementById("loginEmail").value.trim().toLowerCase();
+  const emailInput = rawEmail.replace(/^[\s='":]+/, '').replace(/[\s='":]+$/, '');
   const passwordInput = document.getElementById("loginPassword").value.trim();
 
-  // Check Super Admin (accepts both "admin@irideconnect.ph" and "admin")
+  // Check Super Admin (accepts "admin@irideconnect.ph" and "admin")
   const isSuperAdminEmail = (emailInput === SUPER_ADMIN.email.toLowerCase() || emailInput === "admin");
   const isSuperAdminPass = (passwordInput === SUPER_ADMIN.password);
 
@@ -321,7 +323,7 @@ function handleLoginSubmit(e) {
 
   // Then check club users (with whitespace trimming)
   const found = usersData.find(u => 
-    u.email.trim().toLowerCase() === emailInput && u.password.trim() === passwordInput
+    u.email.trim().toLowerCase().replace(/^[\s='":]+/, '') === emailInput && u.password.trim() === passwordInput
   );
 
   if (found) {
@@ -334,6 +336,18 @@ function handleLoginSubmit(e) {
   } else {
     showToast("❌ Invalid login credentials. Please check your email and password.");
   }
+}
+
+function fillSuperAdminDemo() {
+  document.getElementById("loginEmail").value = "admin@irideconnect.ph";
+  document.getElementById("loginPassword").value = "superadmin2026";
+  showToast("🔑 Super Admin credentials filled! Click 'Login to Portal'.");
+}
+
+function fillClubDemo() {
+  document.getElementById("loginEmail").value = "falcon.riders@gmail.com";
+  document.getElementById("loginPassword").value = "admin123";
+  showToast("🏍️ Club Demo credentials filled! Click 'Login to Portal'.");
 }
 
 function handleRegisterSubmit(e) {
