@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RideConnect PH | Philippine Motorcycle Community Platform</title>
+  <meta name="description" content="Discover upcoming charity rides, fundraising events, medical missions, roadside assistance, and motorcycle community activities across the Philippines.">
+  <link rel="stylesheet" href="styles.css?v=2.4">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon-wrapper">
+          <i class="fa-solid fa-motorcycle"></i>
+        </div>
+        <span>RideConnect <span class="ph-tag">PH</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="#calendar" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Events Calendar</a></li>
+        <li><a href="#emergency" class="nav-link"><i class="fa-solid fa-phone-volume"></i> Emergency Hotline</a></li>
+        <li><a href="#safety" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Safety Checklist</a></li>
+        <li><a href="#clubs" class="nav-link"><i class="fa-solid fa-users"></i> Riding Clubs</a></li>
+        <li><a href="#marketplace" class="nav-link"><i class="fa-solid fa-store"></i> Marketplace</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <select class="region-select" id="regionSelect" onchange="handleRegionChange(this.value)">
+          <option value="all">📍 All Philippines</option>
+          <option value="luzon">📍 Luzon Region</option>
+          <option value="visayas">📍 Visayas Region</option>
+          <option value="mindanao">📍 Mindanao Region</option>
+        </select>
+        <div id="navAuthActions" style="display: flex; gap: 8px;">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-card">
+        <img src="assets/hero_charity_ride.jpg" alt="Philippine Motorcycle Charity Ride" class="hero-bg-img">
+        <div class="hero-overlay"></div>
+        <div class="hero-layout">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <i class="fa-solid fa-handshake"></i> Inter-Club Collaboration Platform
+            </div>
+            <h1 class="hero-title">Connecting Riders for a Greater Cause</h1>
+            <p class="hero-subtitle">
+              Register your riding club, post charity motorcades, and collaborate with co-hosting motorcycle groups across the Philippines.
+            </p>
+            <div class="hero-ctas">
+              <button class="btn btn-orange" onclick="handlePostEventClick()">
+                <i class="fa-solid fa-calendar-plus"></i> Post & Host Charity Ride
+              </button>
+              <button class="btn btn-green" onclick="openAuthModal('register')">
+                <i class="fa-solid fa-shield-halved"></i> Register Club
+              </button>
+              <a href="#calendar" class="btn btn-secondary">
+                <i class="fa-solid fa-calendar-check"></i> Events Calendar
+              </a>
+            </div>
+          </div>
+          
+          <div class="hero-carousel-container" id="heroCarousel" style="display: none;">
+            <div class="hero-carousel-label"><i class="fa-solid fa-star"></i> Featured Sponsor</div>
+            <div class="hero-carousel-track" id="heroCarouselTrack">
+              <!-- Slides injected here via JS -->
+            </div>
+            <div class="hero-carousel-indicators" id="heroCarouselIndicators">
+              <!-- Dots injected here via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Statistics Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card" style="cursor: pointer;" onclick="scrollToSection('calendar')">
+          <div class="stat-icon blue">
+            <i class="fa-solid fa-calendar-day"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="statEventsCount">48+</h3>
+            <p>Upcoming Events</p>
+          </div>
+        </div>
+
+        <div class="stat-card" style="cursor: pointer;" onclick="scrollToSection('clubs')">
+          <div class="stat-icon orange">
+            <i class="fa-solid fa-people-group"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="statClubsCount">150+</h3>
+            <p>Registered Riding Clubs</p>
+          </div>
+        </div>
+
+        <div class="stat-card" style="cursor: pointer;" onclick="scrollToSection('clubs')">
+          <div class="stat-icon green">
+            <i class="fa-solid fa-motorcycle"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="statRidersCount">12,400+</h3>
+            <p>Participating Riders</p>
+          </div>
+        </div>
+
+        <div class="stat-card" style="cursor: pointer;" onclick="openDonateModal()">
+          <div class="stat-icon red">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+          </div>
+          <div class="stat-info">
+            <h3>₱4.8M+</h3>
+            <p>Raised for Charity</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Feature: Interactive Event Calendar -->
+  <section class="calendar-section" id="calendar">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <span class="section-tag">Interactive Feature</span>
+          <h2 class="section-title">Community Event Calendar</h2>
+          <p class="section-subtitle">Google Calendar style layout with real-time participant counters and co-hosting riding clubs.</p>
+        </div>
+        <button class="btn btn-orange" onclick="handlePostEventClick()">
+          <i class="fa-solid fa-plus"></i> Post Event (Club Login Required)
+        </button>
+      </div>
+
+      <div class="calendar-card">
+        <!-- Calendar Toolbar Header -->
+        <div class="calendar-header-toolbar">
+          <div class="calendar-month-control">
+            <button class="icon-btn" id="prevMonthBtn" onclick="changeCalendarMonth(-1)" title="Previous Month"><i class="fa-solid fa-chevron-left"></i></button>
+            <span class="calendar-month-title" id="currentMonthYear">July 2026</span>
+            <button class="icon-btn" id="nextMonthBtn" onclick="changeCalendarMonth(1)" title="Next Month"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+
+          <div class="calendar-filter-chips">
+            <button class="chip active" data-filter="all" onclick="filterCalendarCategory('all', this)"><i class="fa-solid fa-layer-group"></i> All Events</button>
+            <button class="chip charity" data-filter="charity" onclick="filterCalendarCategory('charity', this)"><i class="fa-solid fa-heart"></i> ❤️ Charity Event</button>
+            <button class="chip medical" data-filter="medical" onclick="filterCalendarCategory('medical', this)"><i class="fa-solid fa-kit-medical"></i> 🩺 Medical Mission</button>
+            <button class="chip fun" data-filter="fun" onclick="filterCalendarCategory('fun', this)"><i class="fa-solid fa-route"></i> 🏍️ Fun Ride</button>
+          </div>
+        </div>
+
+        <!-- Grid Table -->
+        <div class="calendar-grid-wrapper">
+          <div class="calendar-weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+          <div class="calendar-days-grid" id="calendarDaysGrid">
+            <!-- Dynamic calendar cells rendered by app.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Emergency Roadside Assistance Hotline Section -->
+  <section class="emergency-section" id="emergency">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <span class="section-tag" style="color: var(--accent-red);">Roadside Utility</span>
+          <h2 class="section-title">Rider Emergency & Rescue Hotlines</h2>
+          <p class="section-subtitle">24/7 direct hotlines for Quezon Provincial Highway Patrol, Red Cross Ambulance, Local Towing, and Repair Directory.</p>
+        </div>
+      </div>
+
+      <div class="hotline-grid">
+        <!-- 1. PNP-HPG HIGHWAY RESCUE -->
+        <div class="hotline-card">
+          <div>
+            <span class="popover-category charity" style="background: var(--accent-red-light); color: var(--accent-red);">PNP HIGHWAY PATROL</span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-top: 6px;">Quezon Provincial Highway Patrol Team</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Highway patrol and road assistance for traffic incidents, motorcycle accidents, and highway emergencies within Quezon Province.</p>
+            <div class="hotline-meta">
+              <div><i class="fa-solid fa-location-dot" style="color: var(--accent-red);"></i> Camp Guillermo Nakar, Lucena City, Quezon</div>
+              <div><i class="fa-solid fa-envelope" style="color: var(--text-muted);"></i> quezonhpg@yahoo.com</div>
+            </div>
+            <div class="hotline-number">
+              <a href="tel:09293626006"><i class="fa-solid fa-phone"></i> 0929-362-6006</a>
+            </div>
+          </div>
+          <button class="btn btn-red" style="width: 100%;" onclick="triggerCall('09293626006', 'Quezon Provincial Highway Patrol Team')"><i class="fa-solid fa-phone"></i> Call HPG Rescue</button>
+        </div>
+
+        <!-- 2. MEDICAL EMERGENCY -->
+        <div class="hotline-card">
+          <div>
+            <span class="popover-category medical">MEDICAL EMERGENCY</span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-top: 6px;">Philippine Red Cross</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">24/7 emergency response and medical assistance. Use the national Philippine Red Cross emergency hotline for urgent assistance.</p>
+            <div class="hotline-meta">
+              <div><i class="fa-solid fa-circle-check" style="color: var(--accent-green);"></i> National Emergency Operations Center</div>
+              <div><i class="fa-solid fa-globe" style="color: var(--text-muted);"></i> redcross.org.ph</div>
+            </div>
+            <div class="hotline-number">
+              <a href="tel:143"><i class="fa-solid fa-truck-medical"></i> Dial 143</a>
+            </div>
+          </div>
+          <button class="btn btn-green" style="width: 100%;" onclick="triggerCall('143', 'Philippine Red Cross Hotline 143')"><i class="fa-solid fa-phone"></i> Call Red Cross 143</button>
+        </div>
+
+        <!-- 3. TOWING & RECOVERY -->
+        <div class="hotline-card">
+          <div>
+            <span class="popover-category fun">TOWING & RECOVERY</span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-top: 6px;">Lucena Towing Services</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Local towing and vehicle recovery assistance in Lucena City and nearby areas.</p>
+            <div class="hotline-meta">
+              <div><i class="fa-solid fa-location-dot" style="color: var(--accent-purple);"></i> Brgy. Purok Narra, Isabang, Lucena City, Quezon</div>
+              <div><i class="fa-solid fa-clock" style="color: var(--accent-green);"></i> Listed as 24 Hours Availability</div>
+            </div>
+            <div class="hotline-number">
+              <a href="tel:09304763569"><i class="fa-solid fa-truck-pickup"></i> 0930-476-3569</a>
+            </div>
+          </div>
+          <button class="btn btn-secondary" style="width: 100%;" onclick="triggerCall('09304763569', 'Lucena Towing Services')"><i class="fa-solid fa-phone"></i> Call Towing Service</button>
+        </div>
+
+        <!-- 4. ROADSIDE REPAIRS -->
+        <div class="hotline-card">
+          <div>
+            <span class="popover-category" style="background: var(--accent-amber-light); color: var(--accent-amber);">ROADSIDE REPAIRS</span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-top: 6px;">Nearby Vulcanizing & Mechanics</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Find nearby vulcanizing shops, tire repair services, and motorcycle mechanics in Lucena City and surrounding areas.</p>
+            <div class="hotline-meta">
+              <div><i class="fa-solid fa-location-dot" style="color: var(--accent-amber);"></i> Lucena City & Surrounding Quezon Areas</div>
+              <div><i class="fa-solid fa-circle-info" style="color: var(--text-muted);"></i> Physical shop locations across major corridors</div>
+            </div>
+            <div class="hotline-number" style="font-size: 1.05rem; color: var(--accent-amber);">
+              <i class="fa-solid fa-wrench"></i> Lucena Area Directory
+            </div>
+          </div>
+          <button class="btn btn-secondary" style="width: 100%;" onclick="openMechanicModal()"><i class="fa-solid fa-location-dot"></i> Find Nearby Mechanic</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pre-ride Safety Checklist Section (BLOWBAGETS) -->
+  <section class="safety-section" id="safety">
+    <div class="container">
+      <div class="safety-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+          <div>
+            <span class="hero-badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-green); border-color: var(--accent-green);"><i class="fa-solid fa-circle-check"></i> Rider Safety Tool</span>
+            <h2 style="font-size: 2rem; font-weight: 800; margin-top: 4px;">Pre-Ride Safety Checklist (B.L.O.W.B.A.G.E.T.S.)</h2>
+            <p style="color: rgba(241, 245, 249, 0.85); max-width: 600px;">Tap each item to complete your safety inspection before joining any long-distance charity ride!</p>
+          </div>
+          <button class="btn btn-green" onclick="resetBlowbagets()">
+            <i class="fa-solid fa-rotate"></i> Reset Checklist
+          </button>
+        </div>
+
+        <div class="blowbagets-grid">
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>B - Battery</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Clean terminals & charge</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>L - Lights</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Headlight, brake & signals</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>O - Oil</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Engine oil & brake fluid</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>W - Water</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Coolant & hydration pack</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>B - Brakes</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Pads, lever travel & fluid</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>A - Air</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Tire PSI (Front/Rear)</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>G - Gas</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Full tank before jump-off</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>E - Engine</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">No strange noises/leaks</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>T - Tires</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Tread depth & no nails</span></div>
+          </div>
+          <div class="blow-item" onclick="toggleBlowItem(this)">
+            <div class="blow-check"><i class="fa-solid fa-check" style="display:none;"></i></div>
+            <div><strong>S - Self</strong><br><span style="font-size: 0.78rem; opacity: 0.8;">Proper gear & full rest</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Participant Section: Registered Riding Clubs -->
+  <section class="clubs-section" id="clubs">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <span class="section-tag">Community Directory</span>
+          <h2 class="section-title">Participating Riding Clubs</h2>
+          <p class="section-subtitle">Registered motorcycle clubs on RideConnect PH platform.</p>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <input type="text" id="clubSearchInput" oninput="filterClubs()" placeholder="🔍 Search club or city..." style="padding: 10px 16px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit; font-size: 0.9rem;">
+          <button class="btn btn-orange" onclick="openAuthModal('register')"><i class="fa-solid fa-shield-halved"></i> Register Club</button>
+        </div>
+      </div>
+
+      <div class="clubs-grid" id="clubsGrid">
+        <!-- Dynamic Club Cards -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Advertisement Section -->
+  <section class="ads-section" id="marketplace">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <span class="section-tag">Community Sponsors</span>
+          <h2 class="section-title">Official Merchant Partners</h2>
+          <p class="section-subtitle">Verified motorcycle gear, accessory shops, and oil brands supporting charity rides.</p>
+        </div>
+        <div class="section-actions" id="adminAdsBtnContainer">
+          <!-- Admin button rendered by JS -->
+        </div>
+      </div>
+
+      <div class="ads-grid" id="adsGrid">
+        <!-- Dynamically rendered by renderAds() -->
+      </div>
+
+      <div class="ads-empty-state" id="adsEmptyState" style="display: none;">
+        <i class="fa-solid fa-rectangle-ad"></i>
+        <h3>No Advertisements Yet</h3>
+        <p>Business advertisements will appear here once added by the platform admin.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Hover Popover Element -->
+  <div class="event-popover" id="eventPopover">
+    <img src="assets/medical_mission.jpg" alt="Event Banner" class="popover-banner" id="popoverBanner">
+    <div class="popover-body">
+      <span class="popover-category charity" id="popoverCategory">❤️ Charity Event</span>
+      <h3 class="popover-title" id="popoverTitle">Falcon Riders Charity Ride</h3>
+      
+      <div class="popover-info-list">
+        <div class="popover-info-item"><i class="fa-regular fa-calendar" style="color: var(--primary-blue);"></i> <span id="popoverDate">July 12, 2026</span></div>
+        <div class="popover-info-item"><i class="fa-regular fa-clock" style="color: var(--primary-blue);"></i> <span id="popoverTime">05:00 AM - 02:00 PM</span></div>
+        <div class="popover-info-item"><i class="fa-solid fa-location-dot" style="color: var(--accent-red);"></i> <span id="popoverLocation">Lucena City Hall Plaza</span></div>
+        <div class="popover-info-item"><i class="fa-solid fa-user-shield" style="color: var(--accent-orange);"></i> Organizer: <strong id="popoverOrganizer">Falcon Riders Club</strong></div>
+      </div>
+
+      <div class="popover-groups-preview">
+        <div class="groups-preview-title"><i class="fa-solid fa-users"></i> Co-Hosting Riding Clubs</div>
+        <div class="groups-tags" id="popoverGroupsTags">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <div class="popover-actions">
+        <button class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.82rem;" id="popoverDetailsBtn"><i class="fa-solid fa-circle-info"></i> View Details</button>
+        <button class="btn btn-orange" style="padding: 8px 12px; font-size: 0.82rem;" id="popoverJoinBtn"><i class="fa-solid fa-handshake"></i> Collaborate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Advertisement Manager Modal -->
+  <div class="modal-overlay" id="adsManagerModal">
+    <div class="modal-content" style="max-width: 860px;">
+      <button class="modal-close-btn" onclick="closeModal('adsManagerModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 36px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+          <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--accent-orange), #ea580c); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem;">
+            <i class="fa-solid fa-bullhorn"></i>
+          </div>
+          <h2 style="font-size: 1.6rem; font-weight: 800;">Advertisement Manager</h2>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 28px;">Add, manage, and publish business advertisements on the RideConnect PH platform.</p>
+
+        <!-- Add New Ad Form -->
+        <div class="admin-ad-form-card">
+          <h3 class="admin-ad-form-title"><i class="fa-solid fa-plus-circle"></i> Add New Advertisement</h3>
+          <form id="addAdForm" onsubmit="submitNewAd(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+              <div>
+                <label class="admin-form-label">Business Name</label>
+                <input type="text" id="adBusinessName" required placeholder="e.g. Apex Helmet Shop" class="admin-form-input">
+              </div>
+              <div>
+                <label class="admin-form-label">Business Category</label>
+                <select id="adCategory" required class="admin-form-input">
+                  <option value="Helmet & Gear Shop">🪖 Helmet & Gear Shop</option>
+                  <option value="Custom Apparel">👕 Custom Apparel</option>
+                  <option value="Lubricants & Care">🛢️ Lubricants & Care</option>
+                  <option value="Motorcycle Parts">⚙️ Motorcycle Parts</option>
+                  <option value="Motorcycle Dealer">🏍️ Motorcycle Dealer</option>
+                  <option value="Repair & Service">🔧 Repair & Service</option>
+                  <option value="Food & Beverages">🍔 Food & Beverages</option>
+                  <option value="Insurance & Finance">🛡️ Insurance & Finance</option>
+                  <option value="Other Services">📦 Other Services</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-bottom: 14px;">
+              <label class="admin-form-label">Business Description</label>
+              <textarea id="adDescription" rows="2" required placeholder="Short promo text for the ad card..." class="admin-form-input"></textarea>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+              <div>
+                <label class="admin-form-label">Contact / Phone Number</label>
+                <input type="text" id="adContact" placeholder="e.g. 0917-123-4567" class="admin-form-input">
+              </div>
+              <div>
+                <label class="admin-form-label">Website / Facebook Link</label>
+                <input type="url" id="adWebsite" placeholder="e.g. https://facebook.com/apexhelmets" class="admin-form-input">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+              <div>
+                <label class="admin-form-label">Ad Banner Image URL <span style="opacity: 0.5;">(optional)</span></label>
+                <input type="url" id="adImageUrl" placeholder="Paste image URL or leave blank" class="admin-form-input">
+              </div>
+              <div>
+                <label class="admin-form-label">Gradient Color Scheme</label>
+                <select id="adGradient" class="admin-form-input">
+                  <option value="#f97316,#ea580c">🟠 Orange</option>
+                  <option value="#1e40af,#1d4ed8">🔵 Blue</option>
+                  <option value="#1e293b,#0f172a">⚫ Dark</option>
+                  <option value="#0284c7,#0369a1">🩵 Sky Blue</option>
+                  <option value="#059669,#047857">🟢 Green</option>
+                  <option value="#7c3aed,#6d28d9">🟣 Purple</option>
+                  <option value="#dc2626,#b91c1c">🔴 Red</option>
+                  <option value="#d97706,#b45309">🟡 Amber</option>
+                </select>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+              <div>
+                <label class="admin-form-label">Promo / Voucher Code <span style="opacity: 0.5;">(optional)</span></label>
+                <input type="text" id="adVoucherCode" placeholder="e.g. RIDECONNECT15" class="admin-form-input">
+              </div>
+              <div>
+                <label class="admin-form-label">Voucher Label <span style="opacity: 0.5;">(optional)</span></label>
+                <input type="text" id="adVoucherLabel" placeholder="e.g. 15% OFF Helmets" class="admin-form-input">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-orange" style="width: 100%;"><i class="fa-solid fa-bullhorn"></i> Publish Advertisement</button>
+          </form>
+        </div>
+
+        <!-- Existing Ads List -->
+        <div style="margin-top: 28px;">
+          <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 14px; color: var(--text-secondary);"><i class="fa-solid fa-list"></i> Active Advertisements</h3>
+          <div id="adminAdsList" class="admin-ads-list">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTHENTICATION MODAL (Login & Riding Club Registration) -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-content" style="max-width: 520px;">
+      <button class="modal-close-btn" onclick="closeModal('authModal')"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div style="padding: 32px;">
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">Club Login</button>
+          <button class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthTab('register')">Register Club</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">Email Address / Login ID</label>
+            <input type="text" id="loginEmail" required placeholder="e.g. admin@irideconnect.ph or falcon.riders@gmail.com" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+          <div style="margin-bottom: 24px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">Password</label>
+            <div class="password-field-wrapper">
+              <input type="password" id="loginPassword" required placeholder="••••••••" style="width: 100%; padding: 12px; padding-right: 48px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+              <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)" aria-label="Toggle password visibility">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-right-to-bracket"></i> Login to Portal</button>
+          <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 14px;">
+            🔑 <strong>Super Admin:</strong> admin@irideconnect.ph / superadmin2026<br>
+            🏍️ <strong>Club Demo:</strong> falcon.riders@gmail.com / admin123
+          </p>
+        </form>
+
+        <!-- Registration Form -->
+        <form id="registerForm" style="display: none;" onsubmit="handleRegisterSubmit(event)">
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Riding Club Name</label>
+            <input type="text" id="regClubName" required placeholder="e.g. Falcon Riders Club" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Club Admin / Representative Name</label>
+            <input type="text" id="regAdminName" required placeholder="e.g. Capt. Juan Dela Cruz" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">City / Province</label>
+              <input type="text" id="regCity" required placeholder="e.g. Lucena City" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Active Members</label>
+              <input type="number" id="regMembers" required placeholder="e.g. 25" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+            </div>
+          </div>
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Official Email</label>
+            <input type="email" id="regEmail" required placeholder="e.g. info@falconriders.ph" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Create Password</label>
+            <div class="password-field-wrapper">
+              <input type="password" id="regPassword" required placeholder="••••••••" minlength="6" style="width: 100%; padding: 12px; padding-right: 48px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+              <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPassword', this)" aria-label="Toggle password visibility">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Confirm Password</label>
+            <div class="password-field-wrapper">
+              <input type="password" id="regPasswordConfirm" required placeholder="Re-enter your password" minlength="6" style="width: 100%; padding: 12px; padding-right: 48px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+              <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPasswordConfirm', this)" aria-label="Toggle password visibility">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <p id="passwordMatchError" class="password-match-error" style="display: none;"><i class="fa-solid fa-circle-exclamation"></i> Passwords do not match</p>
+            <p id="passwordMatchSuccess" class="password-match-success" style="display: none;"><i class="fa-solid fa-circle-check"></i> Passwords match</p>
+          </div>
+          <button type="submit" class="btn btn-orange" style="width: 100%;"><i class="fa-solid fa-shield-halved"></i> Complete Registration</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Detail Full Modal -->
+  <div class="modal-overlay" id="eventModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal('eventModal')"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="modal-hero">
+        <img src="assets/hero_charity_ride.jpg" alt="Event Banner" class="modal-hero-img" id="modalImg">
+        <div class="modal-hero-overlay">
+          <div>
+            <span class="popover-category charity" id="modalCategoryTag">❤️ Charity Event</span>
+            <h2 style="font-size: 2.2rem; font-weight: 800; margin-top: 6px;" id="modalTitle">Falcon Riders Annual Charity & Medical Mission</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-grid">
+          <div>
+            <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 12px;">Event Description</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 24px;" id="modalDesc">
+              Join hundreds of motorcycle enthusiasts across Quezon province for our annual charity motorcade and medical outreach. We will be delivering free medical consultations, school supplies, and food packs to remote barangays in Tayabas.
+            </p>
+
+            <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 16px;">Ride Timeline & Itinerary</h3>
+            <div class="timeline-step">
+              <div class="timeline-icon">1</div>
+              <div>
+                <strong style="font-size: 0.95rem;">05:00 AM - Assembly & Safety Briefing</strong>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">Lucena City Hall Complex (Free coffee & breakfast packs)</p>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-icon">2</div>
+              <div>
+                <strong style="font-size: 0.95rem;">06:30 AM - Motorcade Jump-Off</strong>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">Staggered departure guided by LGU traffic marshals</p>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-icon">3</div>
+              <div>
+                <strong style="font-size: 0.95rem;">08:30 AM - Arrival & Medical Mission Start</strong>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">Tayabas Community Gymnasium & Relief Center</p>
+              </div>
+            </div>
+
+            <div class="comments-wrapper">
+              <h4 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-comments" style="color: var(--primary-blue);"></i> Inter-Club Collaboration Board
+              </h4>
+              
+              <div id="modalCommentsList">
+                <!-- Dynamic comments -->
+              </div>
+
+              <form onsubmit="postCollaborationComment(event)" style="margin-top: 14px; display: flex; gap: 10px;">
+                <input type="text" id="newCommentInput" placeholder="Post a coordination note or marshal update..." required style="flex: 1; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit; font-size: 0.88rem;">
+                <button type="submit" class="btn btn-primary" style="padding: 10px 16px;"><i class="fa-solid fa-paper-plane"></i> Post Update</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div>
+            <div id="modalAdminActions" style="display: none;"></div>
+
+            <div style="background: var(--bg-light); padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--glass-border); margin-bottom: 20px;">
+              <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 12px;">Host Club Profile</h4>
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-blue); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                  <h5 style="font-size: 0.95rem; font-weight: 800;" id="modalOrganizer">Falcon Riders Club</h5>
+                  <span style="font-size: 0.8rem; color: var(--accent-green); font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Verified Organization</span>
+                </div>
+              </div>
+
+              <button class="btn btn-orange" style="width: 100%; margin-bottom: 10px;" id="modalCollaborateBtn" onclick="handleCollaborateClick()">
+                <i class="fa-solid fa-handshake"></i> Collaborate & Join Co-Host
+              </button>
+              <button class="btn btn-green" style="width: 100%;" onclick="openDonateModal()">
+                <i class="fa-solid fa-donate"></i> Donate to Cause (GCash)
+              </button>
+            </div>
+
+            <div style="background: white; padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--glass-border);">
+              <h4 style="font-size: 0.9rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px;">Official Partner Clubs (<span id="modalCoHostsCount">4</span>)</h4>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-secondary);" id="modalCoHostsList">
+                <!-- Rendered dynamically -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create New Event Modal -->
+  <div class="modal-overlay" id="createEventModal">
+    <div class="modal-content" style="max-width: 600px;">
+      <button class="modal-close-btn" onclick="closeModal('createEventModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 36px;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 6px;">Post & Host a Charity Event</h2>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px;">Publish an upcoming charity motorcade or medical mission hosted by your registered riding club.</p>
+
+        <form id="createEventForm" onsubmit="submitNewEvent(event)">
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">Event Title</label>
+            <input type="text" id="newEventTitle" required placeholder="e.g. Batangas Coastal Clean-up & Feeding Drive" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">Event Category</label>
+              <select id="newEventCategory" required style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+                <option value="charity">❤️ Charity Event</option>
+                <option value="medical">🩺 Medical Mission</option>
+                <option value="fun">🏍️ Fun Ride</option>
+                <option value="announcement">📢 Announcement</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">Event Date</label>
+              <div class="datepicker-wrapper" id="datepickerWrapper">
+                <input type="text" id="newEventDateDisplay" readonly required placeholder="Select a date"
+                  style="width: 100%; padding: 12px; padding-right: 42px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit; cursor: pointer; background: white;"
+                  onclick="toggleDatepicker()">
+                <i class="fa-solid fa-calendar-days datepicker-icon" onclick="toggleDatepicker()"></i>
+                <input type="hidden" id="newEventDay" value="">
+                <input type="hidden" id="newEventMonth" value="">
+                <input type="hidden" id="newEventYear" value="">
+
+                <!-- Mini Calendar Popup -->
+                <div class="datepicker-popup" id="datepickerPopup">
+                  <div class="datepicker-header">
+                    <button type="button" class="datepicker-nav-btn" onclick="datepickerNavMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <span class="datepicker-month-label" id="datepickerMonthLabel"></span>
+                    <button type="button" class="datepicker-nav-btn" onclick="datepickerNavMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                  </div>
+                  <div class="datepicker-weekdays">
+                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                  </div>
+                  <div class="datepicker-days" id="datepickerDays"></div>
+                  <div class="datepicker-footer">
+                    <button type="button" class="datepicker-today-btn" onclick="datepickerSelectToday()"><i class="fa-solid fa-crosshairs"></i> Today</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">Assembly & Route Location</label>
+            <input type="text" id="newEventLocation" required placeholder="e.g. Shell BGC to Nasugbu Batangas" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">Event Details & Purpose</label>
+            <textarea id="newEventDesc" rows="3" required placeholder="Describe the cause, assembly time, and items needed..." style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-orange" style="width: 100%;"><i class="fa-solid fa-paper-plane"></i> Publish Event to Calendar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voucher Modal -->
+  <div class="modal-overlay" id="voucherModal">
+    <div class="modal-content" style="max-width: 450px;">
+      <button class="modal-close-btn" onclick="closeModal('voucherModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 32px; text-align: center;">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--accent-orange-light); color: var(--accent-orange); display: inline-flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 12px;">
+          <i class="fa-solid fa-ticket"></i>
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 4px;" id="voucherShopTitle">Apex Helmet Shop</h2>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;" id="voucherOffer">15% OFF Helmets & Intercoms</p>
+        <div style="background: var(--bg-light); border: 2px dashed var(--accent-orange); padding: 16px; border-radius: var(--radius-md); font-size: 1.3rem; font-weight: 800; color: var(--accent-orange); letter-spacing: 0.1em; margin-bottom: 20px;" id="voucherCodeText">
+          RIDECONNECT15
+        </div>
+        <button class="btn btn-orange" style="width: 100%;" onclick="copyVoucherCode()"><i class="fa-solid fa-copy"></i> Copy Voucher Code</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mechanic & Vulcanizing Directory Modal -->
+  <div class="modal-overlay" id="mechanicModal">
+    <div class="modal-content" style="max-width: 580px;">
+      <button class="modal-close-btn" onclick="closeModal('mechanicModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 32px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--accent-amber-light); color: var(--accent-amber); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+            <i class="fa-solid fa-wrench"></i>
+          </div>
+          <div>
+            <span class="popover-category" style="background: var(--accent-amber-light); color: var(--accent-amber); margin: 0;">ROADSIDE REPAIRS</span>
+            <h2 style="font-size: 1.4rem; font-weight: 800; margin-top: 2px;">Nearby Vulcanizing & Mechanics</h2>
+          </div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 20px;">
+          Physical tire repair shops, vulcanizing services, and motorcycle mechanics located along key highway corridors in <strong>Lucena City and surrounding Quezon areas</strong>:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+          <div style="background: var(--bg-light); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 14px;">
+            <div style="font-weight: 800; font-size: 0.92rem; color: var(--text-primary);"><i class="fa-solid fa-location-dot" style="color: var(--accent-red);"></i> Maharlika Highway & Isabang Corridor</div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Primary corridor for tire vulcanizing, tire replacements, and minor road stop mechanical repairs.</p>
+          </div>
+
+          <div style="background: var(--bg-light); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 14px;">
+            <div style="font-weight: 800; font-size: 0.92rem; color: var(--text-primary);"><i class="fa-solid fa-location-dot" style="color: var(--primary-blue);"></i> Lucena Diversion Road (Gulang-Gulang)</div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Motorcycle spare parts shops, drive-in mechanics, and quick tube repair centers.</p>
+          </div>
+
+          <div style="background: var(--bg-light); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 14px;">
+            <div style="font-weight: 800; font-size: 0.92rem; color: var(--text-primary);"><i class="fa-solid fa-location-dot" style="color: var(--accent-green);"></i> Lucena City Proper & Dalahican Road</div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">General motorcycle repair shops, battery charging, and chain/brake maintenance centers.</p>
+          </div>
+
+          <div style="background: var(--bg-light); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 14px;">
+            <div style="font-weight: 800; font-size: 0.92rem; color: var(--text-primary);"><i class="fa-solid fa-location-dot" style="color: var(--accent-purple);"></i> Tayabas & Pagbilao Highway Junctions</div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Connecting highway junctions with roadside tire inflation and emergency vulcanizing stations.</p>
+          </div>
+        </div>
+
+        <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 8px; font-size: 0.8rem; color: #92400e; margin-bottom: 20px;">
+          <i class="fa-solid fa-circle-info"></i> <strong>Data Safety Notice:</strong> Mobile on-call dispatch numbers are not yet verified. Please visit nearest physical roadside repair shops or ask LGU marshals for local assistance.
+        </div>
+
+        <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('mechanicModal')"><i class="fa-solid fa-xmark"></i> Close Directory</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quote Modal -->
+  <div class="modal-overlay" id="quoteModal">
+    <div class="modal-content" style="max-width: 500px;">
+      <button class="modal-close-btn" onclick="closeModal('quoteModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 32px;">
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 6px;">Request Custom Quote</h2>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 20px;" id="quoteMerchantTitle">Custom Riding Vests & Patches</p>
+        <form onsubmit="submitQuoteRequest(event)">
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Riding Club Name</label>
+            <input type="text" required placeholder="e.g. Falcon Riders Club" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Estimated Quantity</label>
+            <input type="number" required placeholder="e.g. 30 Vests" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Contact Mobile Number</label>
+            <input type="tel" required placeholder="0917 123 4567" style="width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); font-family: inherit;">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-paper-plane"></i> Send Request</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donate Modal -->
+  <div class="modal-overlay" id="donateModal">
+    <div class="modal-content" style="max-width: 450px;">
+      <button class="modal-close-btn" onclick="closeModal('donateModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 32px; text-align: center;">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--accent-green-light); color: var(--accent-green); display: inline-flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 12px;">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 6px;">Support Charity Mission</h2>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 20px;">Send direct aid donations via GCash or Maya for medical kits & school supplies.</p>
+        <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; text-align: left; font-size: 0.9rem;">
+          <p><strong>GCash / Maya Account:</strong> 0917-888-RIDE</p>
+          <p><strong>Account Name:</strong> RideConnect PH Charity Trust</p>
+        </div>
+        <button class="btn btn-green" style="width: 100%;" onclick="closeModal('donateModal'); showToast('❤️ Thank you! Donation reference received.');"><i class="fa-solid fa-check-circle"></i> Confirm Transfer Sent</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="developer-hire-card">
+        <div class="hire-info">
+          <h3>Need a Custom Web Platform or Mobile App?</h3>
+          <p>Looking to build an extraordinary web app, community platform, or custom organization portal? Let's work together to bring your vision to life.</p>
+        </div>
+        <a href="mailto:keasser.gonzales@example.com" class="btn btn-orange" style="white-space: nowrap;"><i class="fa-solid fa-paper-plane"></i> Contact Developer</a>
+      </div>
+
+      <div class="footer-bottom">
+        <div style="display: flex; align-items: center; gap: 12px; font-weight: 800; color: white;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-motorcycle"></i>
+          </div>
+          <span>RideConnect PH</span>
+        </div>
+        <div>
+          <span>© 2026 RideConnect PH. All Rights Reserved.</span>
+          <span style="margin: 0 10px;">•</span>
+          <span>Proudly Developed by <strong class="dev-credit">Keasser Gonzales</strong></span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Registration Success Modal -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-content" style="max-width: 480px; overflow: visible;">
+      <div class="success-modal-body">
+        <!-- Confetti particles -->
+        <div class="confetti-container" id="confettiContainer"></div>
+
+        <!-- Animated checkmark -->
+        <div class="success-checkmark-ring">
+          <div class="success-checkmark-circle">
+            <i class="fa-solid fa-check success-checkmark-icon"></i>
+          </div>
+        </div>
+
+        <h2 class="success-title">Registration Successful!</h2>
+        <p class="success-subtitle">Your riding club is now officially registered on RideConnect PH</p>
+
+        <div class="success-details-card">
+          <div class="success-detail-row">
+            <i class="fa-solid fa-motorcycle" style="color: var(--accent-orange);"></i>
+            <div>
+              <span class="success-detail-label">Club Name</span>
+              <span class="success-detail-value" id="successClubName">—</span>
+            </div>
+          </div>
+          <div class="success-detail-row">
+            <i class="fa-solid fa-user-shield" style="color: var(--primary-blue);"></i>
+            <div>
+              <span class="success-detail-label">Admin</span>
+              <span class="success-detail-value" id="successAdminName">—</span>
+            </div>
+          </div>
+          <div class="success-detail-row">
+            <i class="fa-solid fa-envelope" style="color: var(--accent-green);"></i>
+            <div>
+              <span class="success-detail-label">Email</span>
+              <span class="success-detail-value" id="successEmail">—</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary success-continue-btn" onclick="closeModal('successModal')">
+          <i class="fa-solid fa-right-to-bracket"></i> Continue to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=2.3"></script>
+</body>
+</html>
