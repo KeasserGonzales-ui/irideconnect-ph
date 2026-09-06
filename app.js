@@ -44,9 +44,15 @@ function getSampleReceiptSvg(accountName, amount, refNo, dateStr) {
   return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
 }
 
+const _realDateNow = new Date();
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+let currentMonth = _realDateNow.getMonth(); // Dynamic current real month (0-11)
+let currentYear = _realDateNow.getFullYear(); // Dynamic current real year
+
 const defaultEvents = [
   {
-    id: 1, day: 12, month: 6, year: 2026,
+    id: 1, day: 12, month: currentMonth, year: currentYear,
     title: "Falcon Riders Charity Ride", category: "charity", categoryLabel: "❤️ Charity Event",
     time: "05:00 AM - 02:00 PM", location: "Lucena City to Tayabas, Quezon", organizer: "Falcon Riders Club",
     gcashNumber: "0917-888-RIDE", gcashName: "Falcon Riders Charity Fund",
@@ -63,21 +69,21 @@ const defaultEvents = [
         donorName: "Officer Marco Santos (Honda Riders)",
         amount: 1000,
         refNo: "Ref: 83920194829",
-        receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1000, "83920194829", "July 10, 2026 • 09:30 AM"),
-        date: "July 10, 2026 • 09:30 AM"
+        receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1000, "83920194829", `${monthNames[currentMonth]} 10, ${currentYear} • 09:30 AM`),
+        date: `${monthNames[currentMonth]} 10, ${currentYear} • 09:30 AM`
       },
       {
         id: 102,
         donorName: "NMAX Community QC",
         amount: 1500,
         refNo: "Ref: 94820173620 (Medical packs)",
-        receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1500, "94820173620", "July 11, 2026 • 02:15 PM"),
-        date: "July 11, 2026 • 02:15 PM"
+        receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1500, "94820173620", `${monthNames[currentMonth]} 11, ${currentYear} • 02:15 PM`),
+        date: `${monthNames[currentMonth]} 11, ${currentYear} • 02:15 PM`
       }
     ]
   },
   {
-    id: 2, day: 19, month: 6, year: 2026,
+    id: 2, day: 19, month: currentMonth, year: currentYear,
     title: "Tagaytay Coastal Fun Ride", category: "fun", categoryLabel: "🏍️ Fun Ride",
     time: "04:30 AM - 11:00 AM", location: "BGC Manila to Tagaytay Viewpoint", organizer: "NMAX Community PH",
     gcashNumber: "0918-555-NMAX", gcashName: "NMAX Community PH Aid",
@@ -90,7 +96,7 @@ const defaultEvents = [
     donations: []
   },
   {
-    id: 3, day: 5, month: 6, year: 2026,
+    id: 3, day: 5, month: currentMonth, year: currentYear,
     title: "LTO Helmet & Safety Awareness Drive", category: "announcement", categoryLabel: "📢 Announcement",
     time: "08:00 AM - 12:00 PM", location: "Quezon Memorial Circle, QC", organizer: "LTO Philippines & Allied Clubs",
     gcashNumber: "0917-888-RIDE", gcashName: "Road Safety Foundation",
@@ -101,7 +107,7 @@ const defaultEvents = [
     donations: []
   },
   {
-    id: 4, day: 25, month: 6, year: 2026,
+    id: 4, day: 25, month: currentMonth, year: currentYear,
     title: "Typhoon Relief Motorcade Bicol", category: "medical", categoryLabel: "🩺 Medical Mission",
     time: "04:00 AM - 05:00 PM", location: "Naga City Hall Grounds", organizer: "Bicol Big Bike Alliance",
     gcashNumber: "0919-444-BKL1", gcashName: "Bicol Big Bike Relief Trust",
@@ -115,8 +121,8 @@ const defaultEvents = [
         donorName: "ADV Riders Batangas",
         amount: 2000,
         refNo: "Ref: 99120485721 (Roofing sheets)",
-        receiptImg: getSampleReceiptSvg("Bicol Big Bike Relief Trust", 2000, "99120485721", "July 12, 2026 • 11:00 AM"),
-        date: "July 12, 2026 • 11:00 AM"
+        receiptImg: getSampleReceiptSvg("Bicol Big Bike Relief Trust", 2000, "99120485721", `${monthNames[currentMonth]} 12, ${currentYear} • 11:00 AM`),
+        date: `${monthNames[currentMonth]} 12, ${currentYear} • 11:00 AM`
       }
     ]
   }
@@ -131,10 +137,6 @@ const defaultClubs = [
   { id: 6, name: "🏍 Big Bike Club Laguna", city: "Santa Rosa", riders: 40, verified: true, color: "var(--primary-blue)", bg: "var(--primary-blue-light)", icon: "fa-motorcycle" }
 ];
 
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-let currentMonth = 6; // July
-let currentYear = 2026;
 let usersData = JSON.parse(localStorage.getItem("rideconnect_users")) || defaultUsers;
 if (!usersData.some(u => u.email && u.email.toLowerCase() === SUPER_ADMIN.email.toLowerCase())) {
   usersData.unshift(SUPER_ADMIN);
@@ -142,8 +144,12 @@ if (!usersData.some(u => u.email && u.email.toLowerCase() === SUPER_ADMIN.email.
 }
 let eventsData = JSON.parse(localStorage.getItem("rideconnect_events")) || defaultEvents;
 
-// Ensure all events in memory/storage have GCash and donations fields initialized
+// Ensure all events in memory/storage have GCash and donations fields initialized & sync default events to current month
 eventsData.forEach(evt => {
+  if ([1, 2, 3, 4].includes(evt.id) && evt.month !== currentMonth) {
+    evt.month = currentMonth;
+    evt.year = currentYear;
+  }
   if (!evt.gcashNumber) {
     if (evt.id === 1) evt.gcashNumber = "0917-888-RIDE";
     else if (evt.id === 2) evt.gcashNumber = "0918-555-NMAX";
@@ -164,16 +170,16 @@ eventsData.forEach(evt => {
           donorName: "Officer Marco Santos (Honda Riders)",
           amount: 1000,
           refNo: "Ref: 83920194829",
-          receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1000, "83920194829", "July 10, 2026 • 09:30 AM"),
-          date: "July 10, 2026 • 09:30 AM"
+          receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1000, "83920194829", `${monthNames[currentMonth]} 10, ${currentYear} • 09:30 AM`),
+          date: `${monthNames[currentMonth]} 10, ${currentYear} • 09:30 AM`
         },
         {
           id: 102,
           donorName: "NMAX Community QC",
           amount: 1500,
           refNo: "Ref: 94820173620 (Medical packs)",
-          receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1500, "94820173620", "July 11, 2026 • 02:15 PM"),
-          date: "July 11, 2026 • 02:15 PM"
+          receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1500, "94820173620", `${monthNames[currentMonth]} 11, ${currentYear} • 02:15 PM`),
+          date: `${monthNames[currentMonth]} 11, ${currentYear} • 02:15 PM`
         }
       ];
     } else if (evt.id === 4) {
@@ -183,8 +189,8 @@ eventsData.forEach(evt => {
           donorName: "ADV Riders Batangas",
           amount: 2000,
           refNo: "Ref: 99120485721 (Roofing sheets)",
-          receiptImg: getSampleReceiptSvg("Bicol Big Bike Relief Trust", 2000, "99120485721", "July 12, 2026 • 11:00 AM"),
-          date: "July 12, 2026 • 11:00 AM"
+          receiptImg: getSampleReceiptSvg("Bicol Big Bike Relief Trust", 2000, "99120485721", `${monthNames[currentMonth]} 12, ${currentYear} • 11:00 AM`),
+          date: `${monthNames[currentMonth]} 12, ${currentYear} • 11:00 AM`
         }
       ];
     } else if (!evt.donations) {
@@ -506,6 +512,11 @@ function handleLogout() {
 }
 
 function renderCalendar(month, year) {
+  const monthYearHeader = document.getElementById("currentMonthYear");
+  if (monthYearHeader) {
+    monthYearHeader.textContent = `${monthNames[month]} ${year}`;
+  }
+
   const calendarGrid = document.getElementById("calendarDaysGrid");
   if (!calendarGrid) return;
   calendarGrid.innerHTML = "";
@@ -513,6 +524,10 @@ function renderCalendar(month, year) {
   const firstDay = new Date(year, month, 1).getDay();
   const totalDays = new Date(year, month + 1, 0).getDate();
   const prevMonthTotalDays = new Date(year, month, 0).getDate();
+
+  const realNow = new Date();
+  const isRealCurrentMonth = (month === realNow.getMonth() && year === realNow.getFullYear());
+  const realTodayDay = realNow.getDate();
 
   for (let i = firstDay - 1; i >= 0; i--) {
     const dayCell = document.createElement("div");
@@ -524,7 +539,7 @@ function renderCalendar(month, year) {
   for (let day = 1; day <= totalDays; day++) {
     const dayCell = document.createElement("div");
     dayCell.className = "calendar-day-cell";
-    if (day === 12 && month === 6) dayCell.classList.add("today");
+    if (isRealCurrentMonth && day === realTodayDay) dayCell.classList.add("today");
 
     dayCell.innerHTML = `<span class="day-number">${day}</span>`;
 
