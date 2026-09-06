@@ -1013,3 +1013,155 @@ button { font-family: inherit; border: none; outline: none; cursor: pointer; }
   border-color: var(--primary-blue);
 }
 
+/* ===== GCash Donation Proofs & Upload Styles ===== */
+.file-drop-area {
+  border: 2px dashed rgba(16, 185, 129, 0.4);
+  background: #f0fdf4;
+  border-radius: var(--radius-md);
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.file-drop-area:hover {
+  border-color: var(--accent-green);
+  background: #dcfce7;
+}
+.btn-remove-receipt {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+.btn-remove-receipt:hover {
+  transform: scale(1.1);
+  background: #dc2626;
+}
+
+/* Donation Proof List & Cards */
+.donations-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.donation-proof-card {
+  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+.donation-proof-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.15);
+}
+.receipt-thumb-wrapper {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  background: #f1f5f9;
+}
+.receipt-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+.receipt-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.receipt-thumb-wrapper:hover .receipt-thumb-overlay {
+  opacity: 1;
+}
+.receipt-thumb-wrapper:hover .receipt-thumb-img {
+  transform: scale(1.08);
+}
+.donation-info {
+  flex: 1;
+  min-width: 0;
+}
+.donor-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.donor-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.donor-amount-badge {
+  background: #dcfce7;
+  color: #166534;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(22, 101, 52, 0.2);
+  white-space: nowrap;
+}
+.donation-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.donation-ref-note {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.donation-delete-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+.donation-delete-btn:hover {
+  opacity: 1;
+}
+
+

@@ -21,47 +21,104 @@ const defaultUsers = [
   { id: 2, role: "club", clubName: "Honda Riders PH", adminName: "Officer Marco Santos", email: "honda.riders@gmail.com", password: "admin123", city: "Manila City", members: 34 }
 ];
 
+function getSampleReceiptSvg(accountName, amount, refNo, dateStr) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="500" viewBox="0 0 360 500" fill="none">
+    <rect width="360" height="500" rx="16" fill="#007DFE"/>
+    <rect y="70" width="360" height="430" rx="16" fill="#FFFFFF"/>
+    <circle cx="180" cy="70" r="30" fill="#00D09C"/>
+    <path d="M168 70L176 78L194 60" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="180" y="128" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#007DFE" text-anchor="middle">GCash Express Send</text>
+    <text x="180" y="150" font-family="Arial, sans-serif" font-size="12" fill="#64748B" text-anchor="middle">Payment Sent Successfully</text>
+    <text x="180" y="195" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="#0F172A" text-anchor="middle">₱${Number(amount).toLocaleString()}.00</text>
+    <line x1="30" y1="225" x2="330" y2="225" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="30" y="258" font-family="Arial, sans-serif" font-size="12" fill="#64748B">Sent To:</text>
+    <text x="330" y="258" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="end">${accountName || 'Event Organizer'}</text>
+    <text x="30" y="295" font-family="Arial, sans-serif" font-size="12" fill="#64748B">Reference No:</text>
+    <text x="330" y="295" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="end">${refNo || '901238491823'}</text>
+    <text x="30" y="332" font-family="Arial, sans-serif" font-size="12" fill="#64748B">Date &amp; Time:</text>
+    <text x="330" y="332" font-family="Arial, sans-serif" font-size="12" fill="#0F172A" text-anchor="end">${dateStr || 'July 10, 2026 09:30 AM'}</text>
+    <rect x="25" y="375" width="310" height="70" rx="10" fill="#F0FDF4" stroke="#86EFAC"/>
+    <text x="180" y="405" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534" text-anchor="middle">RideConnect PH Verified Donation</text>
+    <text x="180" y="425" font-family="Arial, sans-serif" font-size="11" fill="#15803D" text-anchor="middle">Official Community Cause Receipt</text>
+  </svg>`;
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
 const defaultEvents = [
   {
     id: 1, day: 12, month: 6, year: 2026,
     title: "Falcon Riders Charity Ride", category: "charity", categoryLabel: "❤️ Charity Event",
     time: "05:00 AM - 02:00 PM", location: "Lucena City to Tayabas, Quezon", organizer: "Falcon Riders Club",
+    gcashNumber: "0917-888-RIDE", gcashName: "Falcon Riders Charity Fund",
     groupsCount: 4, groups: ["Falcon Riders Club", "Honda Riders PH", "NMAX Community", "Raider Nation"],
     banner: "assets/medical_mission.jpg",
     description: "Annual charity motorcade and medical outreach organized by Falcon Riders Club. Free medical consultations, school supplies, and food packs distribution for rural barangays.",
     comments: [
       { author: "Capt. Juan (Falcon Riders)", text: "Assembly at Lucena City Hall Plaza. Free coffee & breakfast packs for all lead marshals!", time: "2 hours ago" },
       { author: "Officer Marco (Honda Riders PH)", text: "Honda Riders PH will provide 5 lead sweepers for Section 2 of the highway.", time: "1 hour ago" }
+    ],
+    donations: [
+      {
+        id: 101,
+        donorName: "Officer Marco Santos (Honda Riders)",
+        amount: 1000,
+        refNo: "Ref: 83920194829",
+        receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1000, "83920194829", "July 10, 2026 • 09:30 AM"),
+        date: "July 10, 2026 • 09:30 AM"
+      },
+      {
+        id: 102,
+        donorName: "NMAX Community QC",
+        amount: 1500,
+        refNo: "Ref: 94820173620 (Medical packs)",
+        receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1500, "94820173620", "July 11, 2026 • 02:15 PM"),
+        date: "July 11, 2026 • 02:15 PM"
+      }
     ]
   },
   {
     id: 2, day: 19, month: 6, year: 2026,
     title: "Tagaytay Coastal Fun Ride", category: "fun", categoryLabel: "🏍️ Fun Ride",
     time: "04:30 AM - 11:00 AM", location: "BGC Manila to Tagaytay Viewpoint", organizer: "NMAX Community PH",
+    gcashNumber: "0918-555-NMAX", gcashName: "NMAX Community PH Aid",
     groupsCount: 3, groups: ["NMAX Community PH", "Vespa Club QC", "Big Bike Club Laguna"],
     banner: "assets/coastal_ride.jpg",
     description: "Scenic early morning fellowship ride to Tagaytay ridge. Enjoy breakfast with over 40 riding clubs while supporting local tourism and road safety awareness.",
     comments: [
       { author: "Admin Alex (NMAX Community)", text: "Jump-off time is 05:00 AM sharp from Shell BGC. Don't forget your hydration packs!", time: "Yesterday" }
-    ]
+    ],
+    donations: []
   },
   {
     id: 3, day: 5, month: 6, year: 2026,
     title: "LTO Helmet & Safety Awareness Drive", category: "announcement", categoryLabel: "📢 Announcement",
     time: "08:00 AM - 12:00 PM", location: "Quezon Memorial Circle, QC", organizer: "LTO Philippines & Allied Clubs",
+    gcashNumber: "0917-888-RIDE", gcashName: "Road Safety Foundation",
     groupsCount: 2, groups: ["LTO Marshals", "Yamaha Club Bulacan"],
     banner: "assets/hero_charity_ride.jpg",
     description: "Free ECE helmet inspection, sticker registration assistance, and defensive riding clinic hosted by road safety officers.",
-    comments: []
+    comments: [],
+    donations: []
   },
   {
     id: 4, day: 25, month: 6, year: 2026,
     title: "Typhoon Relief Motorcade Bicol", category: "medical", categoryLabel: "🩺 Medical Mission",
     time: "04:00 AM - 05:00 PM", location: "Naga City Hall Grounds", organizer: "Bicol Big Bike Alliance",
+    gcashNumber: "0919-444-BKL1", gcashName: "Bicol Big Bike Relief Trust",
     groupsCount: 2, groups: ["Bicol Big Bike Alliance", "Mayon Bikers"],
     banner: "assets/medical_mission.jpg",
     description: "Emergency relief motorcade bringing medical aid, water purification tablets, and roofing materials to typhoon-affected coastal communities.",
-    comments: []
+    comments: [],
+    donations: [
+      {
+        id: 103,
+        donorName: "ADV Riders Batangas",
+        amount: 2000,
+        refNo: "Ref: 99120485721 (Roofing sheets)",
+        receiptImg: getSampleReceiptSvg("Bicol Big Bike Relief Trust", 2000, "99120485721", "July 12, 2026 • 11:00 AM"),
+        date: "July 12, 2026 • 11:00 AM"
+      }
+    ]
   }
 ];
 
@@ -84,6 +141,58 @@ if (!usersData.some(u => u.email && u.email.toLowerCase() === SUPER_ADMIN.email.
   localStorage.setItem("rideconnect_users", JSON.stringify(usersData));
 }
 let eventsData = JSON.parse(localStorage.getItem("rideconnect_events")) || defaultEvents;
+
+// Ensure all events in memory/storage have GCash and donations fields initialized
+eventsData.forEach(evt => {
+  if (!evt.gcashNumber) {
+    if (evt.id === 1) evt.gcashNumber = "0917-888-RIDE";
+    else if (evt.id === 2) evt.gcashNumber = "0918-555-NMAX";
+    else if (evt.id === 4) evt.gcashNumber = "0919-444-BKL1";
+    else evt.gcashNumber = "0917-888-RIDE";
+  }
+  if (!evt.gcashName) {
+    if (evt.id === 1) evt.gcashName = "Falcon Riders Charity Fund";
+    else if (evt.id === 2) evt.gcashName = "NMAX Community PH Aid";
+    else if (evt.id === 4) evt.gcashName = "Bicol Big Bike Relief Trust";
+    else evt.gcashName = (evt.organizer || "RideConnect") + " Fund";
+  }
+  if (!evt.donations || evt.donations.length === 0) {
+    if (evt.id === 1) {
+      evt.donations = [
+        {
+          id: 101,
+          donorName: "Officer Marco Santos (Honda Riders)",
+          amount: 1000,
+          refNo: "Ref: 83920194829",
+          receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1000, "83920194829", "July 10, 2026 • 09:30 AM"),
+          date: "July 10, 2026 • 09:30 AM"
+        },
+        {
+          id: 102,
+          donorName: "NMAX Community QC",
+          amount: 1500,
+          refNo: "Ref: 94820173620 (Medical packs)",
+          receiptImg: getSampleReceiptSvg("Falcon Riders Charity Fund", 1500, "94820173620", "July 11, 2026 • 02:15 PM"),
+          date: "July 11, 2026 • 02:15 PM"
+        }
+      ];
+    } else if (evt.id === 4) {
+      evt.donations = [
+        {
+          id: 103,
+          donorName: "ADV Riders Batangas",
+          amount: 2000,
+          refNo: "Ref: 99120485721 (Roofing sheets)",
+          receiptImg: getSampleReceiptSvg("Bicol Big Bike Relief Trust", 2000, "99120485721", "July 12, 2026 • 11:00 AM"),
+          date: "July 12, 2026 • 11:00 AM"
+        }
+      ];
+    } else if (!evt.donations) {
+      evt.donations = [];
+    }
+  }
+});
+localStorage.setItem("rideconnect_events", JSON.stringify(eventsData));
 let clubsData = JSON.parse(localStorage.getItem("rideconnect_clubs")) || defaultClubs;
 let currentUser = JSON.parse(localStorage.getItem("rideconnect_session")) || null;
 let currentFilter = "all";
@@ -579,19 +688,22 @@ function openEventDetailsModal(eventId) {
     <li><i class="fa-solid fa-motorcycle" style="color: var(--primary-blue);"></i> ${c}</li>
   `).join('');
 
-  // Render Super Admin action buttons
+  // Render Host / Super Admin action buttons
+  const canManageEvent = isSuperAdmin() || (currentUser && currentUser.clubName === evt.organizer);
   const adminActionsEl = document.getElementById("modalAdminActions");
   if (adminActionsEl) {
-    if (isSuperAdmin()) {
+    if (canManageEvent) {
       adminActionsEl.style.display = "block";
+      const badgeTitle = isSuperAdmin() ? "Super Admin Controls" : "Event Organizer Controls";
+      const badgeIcon = isSuperAdmin() ? "fa-crown" : "fa-shield-halved";
       adminActionsEl.innerHTML = `
         <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; border-radius: var(--radius-lg); padding: 16px; margin-bottom: 20px;">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-            <i class="fa-solid fa-crown" style="color: #d97706;"></i>
-            <span style="font-size: 0.78rem; font-weight: 800; color: #92400e; text-transform: uppercase;">Super Admin Controls</span>
+            <i class="fa-solid ${badgeIcon}" style="color: #d97706;"></i>
+            <span style="font-size: 0.78rem; font-weight: 800; color: #92400e; text-transform: uppercase;">${badgeTitle}</span>
           </div>
           <button class="btn btn-orange" style="width: 100%; margin-bottom: 8px;" onclick="openEditEventModal(${evt.id})">
-            <i class="fa-solid fa-pen-to-square"></i> Edit This Event
+            <i class="fa-solid fa-pen-to-square"></i> Edit Event &amp; GCash Info
           </button>
           <button class="btn btn-red" style="width: 100%;" onclick="deleteEvent(${evt.id})">
             <i class="fa-solid fa-trash"></i> Delete This Event
@@ -605,9 +717,68 @@ function openEventDetailsModal(eventId) {
   }
 
   renderModalComments(evt.comments || []);
+  renderModalDonations(evt.donations || []);
 
   const modal = document.getElementById("eventModal");
   if (modal) modal.classList.add("active");
+}
+
+function renderModalDonations(donations) {
+  const container = document.getElementById("modalDonationsList");
+  const countEl = document.getElementById("modalDonationsCount");
+  if (!container) return;
+  
+  const totalAmount = (donations || []).reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
+  if (countEl) {
+    countEl.textContent = `${(donations || []).length} • ₱${totalAmount.toLocaleString()} Total`;
+  }
+  
+  if (!donations || donations.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">
+        <i class="fa-solid fa-hand-holding-dollar" style="font-size: 2rem; color: #86efac; margin-bottom: 8px; display: block;"></i>
+        No donation receipts submitted yet.<br>
+        <span style="font-size: 0.78rem;">Be the first to donate via GCash and upload your proof receipt!</span>
+      </div>
+    `;
+    return;
+  }
+
+  const currentEvt = eventsData.find(e => e.id === activeModalEventId);
+  const canDeleteDonation = isSuperAdmin() || (currentUser && currentEvt && currentUser.clubName === currentEvt.organizer);
+
+  container.innerHTML = `
+    <div class="donations-list-grid">
+      ${donations.map(d => {
+        const safeImg = (d.receiptImg || '').replace(/'/g, "\\'");
+        const safeName = (d.donorName || 'Anonymous Rider').replace(/'/g, "\\'");
+        const safeMeta = (d.date || 'Verified Proof').replace(/'/g, "\\'");
+        return `
+          <div class="donation-proof-card">
+            <div class="receipt-thumb-wrapper" onclick="openReceiptModal('${safeImg}', '${safeName}', ${Number(d.amount) || 0}, '${safeMeta}')" title="Click to view full receipt">
+              <img src="${d.receiptImg}" alt="Receipt" class="receipt-thumb-img" onerror="this.src='assets/hero_charity_ride.jpg'">
+              <div class="receipt-thumb-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+            </div>
+            <div class="donation-info">
+              <div class="donor-name-row">
+                <div class="donor-name" title="${d.donorName}">${d.donorName}</div>
+                <span class="donor-amount-badge">₱${Number(d.amount).toLocaleString()}</span>
+              </div>
+              <div class="donation-meta">
+                <i class="fa-solid fa-clock"></i> ${d.date || 'Recently'}
+              </div>
+              ${d.refNo ? `<div class="donation-ref-note"><i class="fa-solid fa-receipt" style="color: var(--accent-green); font-size: 0.7rem;"></i> ${d.refNo}</div>` : ''}
+              ${canDeleteDonation ? `
+                <div style="margin-top: 6px; text-align: right;">
+                  <button type="button" class="donation-delete-btn" onclick="deleteDonationProof(${d.id})" title="Remove donation proof"><i class="fa-solid fa-trash"></i> Remove</button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
 }
 
 function renderModalComments(comments) {
@@ -689,7 +860,7 @@ function handleCollaborateClick() {
 function submitNewEvent(e) {
   e.preventDefault();
 
-  // If editing an existing event (Super Admin), delegate to edit handler
+  // If editing an existing event, delegate to edit handler
   if (editingEventId !== null) {
     submitEditEvent(editingEventId);
     document.getElementById("createEventForm").reset();
@@ -701,7 +872,9 @@ function submitNewEvent(e) {
   const day = Number(document.getElementById("newEventDay").value);
   const location = document.getElementById("newEventLocation").value;
   const description = document.getElementById("newEventDesc").value;
+  const gcashNumber = document.getElementById("newEventGcashNumber").value.trim() || "0917-888-RIDE";
   const hostName = currentUser ? currentUser.clubName : "Independent Riders PH";
+  const gcashName = document.getElementById("newEventGcashName").value.trim() || (hostName + " Charity Fund");
 
   const categoryLabels = {
     charity: "❤️ Charity Event",
@@ -721,13 +894,16 @@ function submitNewEvent(e) {
     time: "06:00 AM Jump-off",
     location: location,
     organizer: hostName,
+    gcashNumber: gcashNumber,
+    gcashName: gcashName,
     groupsCount: 1,
     groups: [hostName],
     banner: "assets/hero_charity_ride.jpg",
     description: description,
     comments: [
       { author: hostName, text: "Event created. All motorcycle clubs are welcome to join as co-hosting partners!", time: "Just now" }
-    ]
+    ],
+    donations: []
   };
 
   eventsData.push(newEvt);
@@ -736,7 +912,7 @@ function submitNewEvent(e) {
   renderCalendar(currentMonth, currentYear);
   updateStatsCounters();
   closeModal('createEventModal');
-  showToast(`🎉 "${title}" published by ${hostName}!`);
+  showToast(`🎉 "${title}" published with GCash support!`);
   document.getElementById("createEventForm").reset();
   resetCreateFormTitle();
 }
@@ -803,9 +979,163 @@ function openCreateEventModal() {
   if (modal) modal.classList.add("active");
 }
 
-function openDonateModal() {
+let currentReceiptBase64 = null;
+
+function openDonateModal(eventId) {
+  const targetId = eventId || activeModalEventId || (eventsData[0] ? eventsData[0].id : null);
+  const evt = eventsData.find(e => e.id === targetId) || eventsData[0];
+  if (!evt) return;
+
+  activeModalEventId = evt.id;
+
+  const modalTitle = document.getElementById("donateModalTitle");
+  const organizerClub = document.getElementById("donateOrganizerClub");
+  const gcashName = document.getElementById("donateGcashName");
+  const gcashNumber = document.getElementById("donateGcashNumber");
+
+  if (modalTitle) modalTitle.textContent = `Support: ${evt.title}`;
+  if (organizerClub) organizerClub.textContent = evt.organizer || "Verified Organizer";
+  if (gcashName) gcashName.textContent = evt.gcashName || (evt.organizer + " Charity Fund");
+  if (gcashNumber) gcashNumber.textContent = evt.gcashNumber || "0917-888-RIDE";
+
+  // Reset proof form
+  const form = document.getElementById("donationProofForm");
+  if (form) form.reset();
+  removeReceiptImage();
+
+  // Pre-fill donor name if logged in
+  const donorNameInput = document.getElementById("donorNameInput");
+  if (donorNameInput && currentUser) {
+    donorNameInput.value = `${currentUser.adminName} (${currentUser.clubName})`;
+  }
+
   const modal = document.getElementById("donateModal");
   if (modal) modal.classList.add("active");
+}
+
+function copyGcashNumber() {
+  const numEl = document.getElementById("donateGcashNumber");
+  const num = numEl ? numEl.textContent.trim() : "0917-888-RIDE";
+  
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(num);
+  } else {
+    const temp = document.createElement("textarea");
+    temp.value = num;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+  }
+  showToast(`📋 Copied GCash Number: ${num}`);
+}
+
+function handleReceiptFileSelect(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    showToast("⚠️ Image size exceeds 5MB. Please choose a smaller receipt screenshot.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    currentReceiptBase64 = e.target.result;
+    const previewImg = document.getElementById("receiptPreviewImg");
+    const wrapper = document.getElementById("receiptPreviewWrapper");
+    const placeholder = document.getElementById("receiptPlaceholder");
+    if (previewImg && wrapper && placeholder) {
+      previewImg.src = currentReceiptBase64;
+      wrapper.style.display = "block";
+      placeholder.style.display = "none";
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeReceiptImage() {
+  currentReceiptBase64 = null;
+  const fileInput = document.getElementById("donorReceiptFile");
+  if (fileInput) fileInput.value = "";
+  const wrapper = document.getElementById("receiptPreviewWrapper");
+  const placeholder = document.getElementById("receiptPlaceholder");
+  if (wrapper && placeholder) {
+    wrapper.style.display = "none";
+    placeholder.style.display = "block";
+  }
+}
+
+function submitDonationProof(e) {
+  e.preventDefault();
+  const evt = eventsData.find(e => e.id === activeModalEventId);
+  if (!evt) {
+    showToast("❌ Event not found.");
+    return;
+  }
+
+  const donorName = document.getElementById("donorNameInput").value.trim();
+  const amount = Number(document.getElementById("donorAmountInput").value);
+  const refNo = document.getElementById("donorRefInput").value.trim();
+  
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+  // If user didn't pick an image file, generate nice SVG receipt proof
+  const receiptImg = currentReceiptBase64 || getSampleReceiptSvg(evt.gcashName || evt.organizer, amount, refNo, dateStr);
+
+  const newProof = {
+    id: Date.now(),
+    donorName: donorName,
+    amount: amount,
+    refNo: refNo,
+    receiptImg: receiptImg,
+    date: dateStr
+  };
+
+  if (!evt.donations) evt.donations = [];
+  evt.donations.unshift(newProof);
+  localStorage.setItem("rideconnect_events", JSON.stringify(eventsData));
+
+  renderModalDonations(evt.donations);
+  closeModal('donateModal');
+  showToast(`🎉 Salamat ${donorName}! ₱${amount.toLocaleString()} GCash donation proof submitted.`);
+}
+
+function openReceiptModal(imgSrc, donorName, amount, meta) {
+  const img = document.getElementById("receiptModalImg");
+  const title = document.getElementById("receiptModalDonorName");
+  const metaEl = document.getElementById("receiptModalMeta");
+  const downloadBtn = document.getElementById("receiptModalDownloadBtn");
+
+  if (img) img.src = imgSrc;
+  if (title) title.textContent = `${donorName} — GCash Receipt`;
+  if (metaEl) metaEl.textContent = `Amount: ₱${Number(amount).toLocaleString()} • ${meta || 'Verified Donation Proof'}`;
+  if (downloadBtn) {
+    downloadBtn.href = imgSrc;
+    downloadBtn.download = `gcash_receipt_${donorName.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+  }
+
+  const modal = document.getElementById("receiptViewModal");
+  if (modal) modal.classList.add("active");
+}
+
+function deleteDonationProof(proofId) {
+  const evt = eventsData.find(e => e.id === activeModalEventId);
+  if (!evt || !evt.donations) return;
+
+  const canDelete = isSuperAdmin() || (currentUser && currentUser.clubName === evt.organizer);
+  if (!canDelete) {
+    showToast("🔒 Only the event organizer or Super Admin can remove donation records.");
+    return;
+  }
+
+  if (!confirm("Remove this donation proof record?")) return;
+
+  evt.donations = evt.donations.filter(d => d.id !== proofId);
+  localStorage.setItem("rideconnect_events", JSON.stringify(eventsData));
+  renderModalDonations(evt.donations);
+  showToast("🗑️ Donation proof removed.");
 }
 
 function closeModal(modalId) {
@@ -813,13 +1143,18 @@ function closeModal(modalId) {
   if (modal) modal.classList.remove("active");
 }
 
-// ===== SUPER ADMIN: Event Edit & Delete =====
+// ===== SUPER ADMIN & ORGANIZER: Event Edit & Delete =====
 let editingEventId = null;
 
 function openEditEventModal(eventId) {
-  if (!isSuperAdmin()) return;
   const evt = eventsData.find(e => e.id === eventId);
   if (!evt) return;
+
+  const canManage = isSuperAdmin() || (currentUser && currentUser.clubName === evt.organizer);
+  if (!canManage) {
+    showToast("🔒 Only the event host or Super Admin can edit this event.");
+    return;
+  }
 
   editingEventId = eventId;
   closeModal('eventModal');
@@ -829,6 +1164,8 @@ function openEditEventModal(eventId) {
   document.getElementById("newEventCategory").value = evt.category;
   document.getElementById("newEventLocation").value = evt.location;
   document.getElementById("newEventDesc").value = evt.description;
+  document.getElementById("newEventGcashNumber").value = evt.gcashNumber || "";
+  document.getElementById("newEventGcashName").value = evt.gcashName || "";
 
   // Set date
   document.getElementById("newEventDay").value = evt.day;
@@ -840,12 +1177,12 @@ function openEditEventModal(eventId) {
   // Update modal title to "Edit" mode
   const modalEl = document.getElementById("createEventModal");
   const modalTitle = modalEl.querySelector("h2");
-  if (modalTitle) modalTitle.textContent = "✏️ Edit Event (Super Admin)";
+  if (modalTitle) modalTitle.textContent = isSuperAdmin() ? "✏️ Edit Event & GCash (Super Admin)" : "✏️ Edit Event & GCash Details";
   const submitBtn = modalEl.querySelector("button[type='submit']");
   if (submitBtn) submitBtn.innerHTML = '<i class="fa-solid fa-save"></i> Save Changes';
 
   openCreateEventModal();
-  showToast("✏️ Editing event — make your changes and save.");
+  showToast("✏️ Editing event — update GCash info or details and save.");
 }
 
 function submitEditEvent(eventId) {
@@ -859,6 +1196,8 @@ function submitEditEvent(eventId) {
   evt.year = Number(document.getElementById("newEventYear").value) || evt.year;
   evt.location = document.getElementById("newEventLocation").value;
   evt.description = document.getElementById("newEventDesc").value;
+  evt.gcashNumber = document.getElementById("newEventGcashNumber").value.trim() || evt.gcashNumber || "0917-888-RIDE";
+  evt.gcashName = document.getElementById("newEventGcashName").value.trim() || evt.gcashName || (evt.organizer + " Charity Fund");
 
   const categoryLabels = {
     charity: "❤️ Charity Event",
@@ -871,7 +1210,7 @@ function submitEditEvent(eventId) {
   localStorage.setItem("rideconnect_events", JSON.stringify(eventsData));
   renderCalendar(currentMonth, currentYear);
   closeModal('createEventModal');
-  showToast(`✅ Event "${evt.title}" updated successfully!`);
+  showToast(`✅ Event "${evt.title}" & GCash details updated successfully!`);
 
   // Reset form title back
   resetCreateFormTitle();
@@ -879,9 +1218,14 @@ function submitEditEvent(eventId) {
 }
 
 function deleteEvent(eventId) {
-  if (!isSuperAdmin()) return;
   const evt = eventsData.find(e => e.id === eventId);
   if (!evt) return;
+
+  const canManage = isSuperAdmin() || (currentUser && currentUser.clubName === evt.organizer);
+  if (!canManage) {
+    showToast("🔒 Only the event host or Super Admin can delete this event.");
+    return;
+  }
 
   if (!confirm(`🗑️ Are you sure you want to delete "${evt.title}"?\n\nThis action cannot be undone.`)) return;
 
