@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RideConnect PH | Philippine Motorcycle Community Platform</title>
   <meta name="description" content="Discover upcoming charity rides, fundraising events, medical missions, roadside assistance, and motorcycle community activities across the Philippines.">
-  <link rel="stylesheet" href="styles.css?v=2.5">
+  <link rel="stylesheet" href="styles.css?v=2.6">
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -165,6 +165,9 @@
         </div>
 
         <!-- Grid Table -->
+        <div class="calendar-scroll-hint">
+          <i class="fa-solid fa-arrows-left-right"></i> <span>Swipe grid horizontally or browse event list below</span>
+        </div>
         <div class="calendar-grid-wrapper">
           <div class="calendar-weekdays">
             <div>Sun</div>
@@ -177,6 +180,17 @@
           </div>
           <div class="calendar-days-grid" id="calendarDaysGrid">
             <!-- Dynamic calendar cells rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Mobile & Tablet Agenda Event Cards List -->
+        <div class="mobile-agenda-section" id="mobileAgendaSection">
+          <div class="mobile-agenda-header">
+            <h3><i class="fa-solid fa-calendar-check" style="color: var(--primary-blue);"></i> Scheduled Events (<span id="agendaCount">4</span>)</h3>
+            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Tap any event to view full details</span>
+          </div>
+          <div class="mobile-agenda-list" id="mobileEventsAgenda">
+            <!-- Rendered dynamically by renderAgendaList() in app.js -->
           </div>
         </div>
       </div>
@@ -964,6 +978,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=2.5"></script>
+  <script src="app.js?v=2.6"></script>
 </body>
 </html>

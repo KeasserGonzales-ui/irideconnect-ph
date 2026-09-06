@@ -454,6 +454,65 @@ function renderCalendar(month, year) {
     dayCell.innerHTML = `<span class="day-number">${i}</span>`;
     calendarGrid.appendChild(dayCell);
   }
+
+  // Render mobile agenda cards
+  renderAgendaList(month, year);
+}
+
+function renderAgendaList(month, year) {
+  const container = document.getElementById("mobileEventsAgenda");
+  const countEl = document.getElementById("agendaCount");
+  if (!container) return;
+
+  let monthEvents = eventsData.filter(e => Number(e.month) === month && Number(e.year) === year);
+  if (currentFilter !== "all") {
+    monthEvents = monthEvents.filter(e => e.category === currentFilter);
+  }
+
+  // Sort by day ascending
+  monthEvents.sort((a, b) => Number(a.day) - Number(b.day));
+
+  if (countEl) countEl.textContent = monthEvents.length;
+
+  if (monthEvents.length === 0) {
+    container.innerHTML = `
+      <div class="agenda-empty-state">
+        <i class="fa-solid fa-calendar-xmark" style="font-size: 2.2rem; color: var(--text-muted); margin-bottom: 8px;"></i>
+        <p style="font-weight: 700; color: var(--text-secondary); font-size: 0.95rem;">No scheduled events for ${monthNames[month]} ${year}.</p>
+        <button class="btn btn-orange" style="margin-top: 12px; padding: 8px 16px; font-size: 0.85rem;" onclick="handlePostEventClick()">
+          <i class="fa-solid fa-plus"></i> Post & Host an Event
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = monthEvents.map(evt => {
+    const coHostsCount = (evt.groups || []).length;
+    return `
+      <div class="agenda-card" onclick="openEventDetailsModal(${evt.id})">
+        <div class="agenda-date-badge">
+          <span class="agenda-month">${monthNames[evt.month].substring(0, 3)}</span>
+          <span class="agenda-day">${evt.day}</span>
+        </div>
+        <div class="agenda-content">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
+            <span class="popover-category ${evt.category}" style="margin-bottom: 0; font-size: 0.7rem; padding: 2px 8px;">${evt.categoryLabel || 'Event'}</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;"><i class="fa-solid fa-users" style="color: var(--primary-blue);"></i> ${coHostsCount} Clubs</span>
+          </div>
+          <h4 class="agenda-title">${evt.title}</h4>
+          <div class="agenda-details">
+            <div><i class="fa-solid fa-clock" style="color: var(--primary-blue);"></i> ${evt.time || '06:00 AM'}</div>
+            <div><i class="fa-solid fa-location-dot" style="color: var(--accent-red);"></i> ${evt.location}</div>
+            <div><i class="fa-solid fa-shield-halved" style="color: var(--accent-orange);"></i> ${evt.organizer}</div>
+          </div>
+        </div>
+        <div class="agenda-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 function showPopover(e, evt) {

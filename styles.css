@@ -192,6 +192,26 @@ button { font-family: inherit; border: none; outline: none; cursor: pointer; }
 .pill-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; }
 .pill-meta { font-size: 0.72rem; opacity: 0.85; display: flex; align-items: center; gap: 8px; }
 
+/* Mobile Agenda & Scroll Hint */
+.calendar-scroll-hint { display: none; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; background: var(--bg-light); border-bottom: 1px solid var(--glass-border); font-size: 0.78rem; font-weight: 700; color: var(--text-muted); }
+.calendar-grid-wrapper { width: 100%; }
+
+.mobile-agenda-section { padding: 24px 28px; border-top: 1px solid var(--glass-border); background: #fafafa; }
+.mobile-agenda-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+.mobile-agenda-header h3 { font-size: 1.15rem; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+.mobile-agenda-list { display: flex; flex-direction: column; gap: 12px; }
+.agenda-card { background: white; border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 14px 18px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--transition); }
+.agenda-card:hover, .agenda-card:active { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--primary-blue); }
+.agenda-date-badge { width: 52px; height: 52px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-blue-light), #e0e7ff); border: 1px solid rgba(30, 64, 175, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+.agenda-month { font-size: 0.68rem; font-weight: 800; color: var(--primary-blue); text-transform: uppercase; line-height: 1; }
+.agenda-day { font-size: 1.25rem; font-weight: 800; color: var(--primary-blue); line-height: 1; margin-top: 2px; }
+.agenda-content { flex: 1; min-width: 0; }
+.agenda-title { font-size: 0.95rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.agenda-details { display: flex; flex-direction: column; gap: 2px; font-size: 0.78rem; color: var(--text-secondary); font-weight: 600; }
+.agenda-details div { display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.agenda-arrow { color: var(--text-muted); font-size: 0.9rem; margin-left: auto; }
+.agenda-empty-state { text-align: center; padding: 30px 20px; color: var(--text-muted); }
+
 /* Floating Info Popover Card */
 .event-popover { position: fixed; z-index: 300; width: 330px; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid var(--glass-border); overflow: hidden; display: none; animation: popoverFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 @keyframes popoverFade { from { opacity: 0; transform: translateY(8px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -340,15 +360,65 @@ button { font-family: inherit; border: none; outline: none; cursor: pointer; }
 }
 
 @media (max-width: 768px) {
+  /* Navbar */
+  .navbar { padding: 10px 0; }
+  .container { padding: 0 14px; }
+  .nav-container { gap: 6px; }
   .nav-links { display: none; }
-  .hero-title { font-size: 2.2rem; }
-  .stats-grid { grid-template-columns: 1fr; }
+  .brand-logo { font-size: 1.1rem; gap: 8px; }
+  .brand-icon-wrapper { width: 34px; height: 34px; font-size: 1rem; }
+  .brand-logo span.ph-tag { font-size: 0.65rem; padding: 1px 6px; }
+  .region-select { padding: 6px 8px; font-size: 0.72rem; max-width: 105px; border-radius: 20px; }
+  .nav-actions { gap: 6px; }
+  .nav-actions .btn { padding: 7px 10px; font-size: 0.76rem; border-radius: 20px; }
+  .user-profile-pill { padding: 4px 8px; font-size: 0.75rem; gap: 6px; }
+  .user-avatar-mini { width: 22px; height: 22px; font-size: 0.7rem; }
+
+  /* Hero Section */
+  .hero-section { padding: 16px 0 40px; }
+  .hero-card { min-height: auto; }
+  .hero-layout { padding: 30px 16px; gap: 24px; text-align: center; }
+  .hero-badge { font-size: 0.75rem; padding: 6px 12px; margin-bottom: 14px; }
+  .hero-title { font-size: 2.1rem; line-height: 1.2; margin-bottom: 14px; }
+  .hero-subtitle { font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
+  .hero-ctas { justify-content: center; gap: 10px; }
+  .hero-ctas .btn { width: 100%; max-width: 320px; padding: 10px 16px; font-size: 0.85rem; }
+  .hero-carousel-container { max-width: 100%; min-width: 100%; height: 220px; margin-top: 10px; }
+
+  /* Sections */
+  .section-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+  .section-title { font-size: 1.6rem; }
+  .section-subtitle { font-size: 0.88rem; }
+  .section-header .btn { width: 100%; }
+
+  /* Calendar Section */
+  .calendar-header-toolbar { padding: 14px; gap: 12px; }
+  .calendar-month-control { width: 100%; justify-content: space-between; }
+  .calendar-month-title { font-size: 1.2rem; min-width: auto; }
+  .calendar-filter-chips { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .chip { flex-shrink: 0; padding: 6px 12px; font-size: 0.76rem; }
+  .calendar-scroll-hint { display: flex; }
+  .calendar-grid-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .calendar-weekdays, .calendar-days-grid { min-width: 620px; }
+  .calendar-days-grid { grid-auto-rows: minmax(105px, auto); }
+  .calendar-event-pill { font-size: 0.72rem; padding: 5px 6px; }
+  .mobile-agenda-section { padding: 18px 14px; }
+
+  /* Other Grids */
+  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
   .clubs-grid { grid-template-columns: 1fr; }
   .ads-grid { grid-template-columns: 1fr; }
   .hotline-grid { grid-template-columns: 1fr; }
   .blowbagets-grid { grid-template-columns: 1fr; }
-  .calendar-days-grid { grid-auto-rows: minmax(85px, auto); }
-  .calendar-event-pill { font-size: 0.7rem; padding: 4px 6px; }
+  .developer-hire-card { padding: 24px 16px; gap: 20px; text-align: center; }
+  .developer-links-group { justify-content: center; width: 100%; }
+  .developer-badge-row { justify-content: center; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+
+  /* Modals */
+  .modal-body { padding: 20px 16px; }
+  .modal-hero { height: 200px; }
+  .modal-hero-overlay h2 { font-size: 1.4rem !important; }
 }
 
 /* ===== Password Toggle ===== */
